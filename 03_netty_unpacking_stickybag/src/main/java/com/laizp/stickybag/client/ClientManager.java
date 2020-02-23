@@ -1,6 +1,5 @@
 package com.laizp.stickybag.client;
 
-import com.laizp.linebasedframedecoder.stickybag.client.handle.SomeSocketClientHandler;
 import com.laizp.stickybag.client.handle.SomeSocketClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;

@@ -1,6 +1,6 @@
-package com.laizp.unpacking.client;
+package com.laizp.framedecoder.lengthfieldbasedframedecoder.client;
 
-import com.laizp.unpacking.client.handle.SomeSocketClientHandler;
+import com.laizp.framedecoder.lengthfieldbasedframedecoder.client.handle.SomeSocketClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -8,6 +8,9 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
 /**
@@ -37,8 +40,13 @@ public class ClientManager {
                          */
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
-                            // 因为客户端只发送数据，所以不用解码
+                            // 长度域的数据不推送给对方
+                            // pipeline.addLast(new LengthFieldPrepender(4));
+                            // 包含长度域的数据推送
+                            pipeline.addLast(new LengthFieldPrepender(4, true));
+                            pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
                             pipeline.addLast(new StringEncoder());
+                            pipeline.addLast(new StringDecoder());
                             pipeline.addLast(new SomeSocketClientHandler());
 
                         }
