@@ -1,15 +1,14 @@
-package com.laizp.server.handle;
+package com.laizp.unpacking.server.handle;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 服务器接收客户端信息处理器
  */
 public class SomeSocketServerHandler extends ChannelInboundHandlerAdapter {
+
+    private  int index;
 
     /**
      * 当接收到客户端的数据的时候相应
@@ -21,11 +20,7 @@ public class SomeSocketServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 //        super.channelRead(ctx, msg);
         // 在服务器端的控制台中打印数据
-        System.out.println(ctx.channel().remoteAddress()+", "+msg);
-        // 向客户端发送一个随机数
-        ctx.channel().writeAndFlush("from server: "+ UUID.randomUUID());
-        // 间隔500毫秒发送一次
-        TimeUnit.MILLISECONDS.sleep(500);
+        System.out.println("接收第【"+ ++index +"】组数据："+msg);
     }
 
     @Override
