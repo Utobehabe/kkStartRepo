@@ -1,7 +1,6 @@
-package com.laizp.stickybag.client;
+package com.laizp.framedecoder.linebasedframedecoder.client;
 
-import com.laizp.linebasedframedecoder.stickybag.client.handle.SomeSocketClientHandler;
-import com.laizp.stickybag.client.handle.SomeSocketClientHandler;
+import com.laizp.framedecoder.linebasedframedecoder.client.handle.SomeSocketClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -38,7 +37,6 @@ public class ClientManager {
                          */
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
-                            // 因为客户端只发送数据，所以不用解码
                             pipeline.addLast(new StringEncoder());
                             pipeline.addLast(new SomeSocketClientHandler());
 

@@ -1,7 +1,6 @@
-package com.laizp.stickybag.server;
+package com.laizp.framedecoder.linebasedframedecoder.server;
 
-import com.laizp.linebasedframedecoder.stickybag.server.handle.SomeSocketServerHandler;
-import com.laizp.stickybag.server.handle.SomeSocketServerHandler;
+import com.laizp.framedecoder.linebasedframedecoder.server.handle.SomeSocketServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,6 +8,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 
 /**
@@ -32,7 +32,8 @@ public class ServerManager {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
-                            // 因为服务器制作解码动作，所以不需要编码器
+                            // 客户端推送数据需要推送分隔符才能使用LineBasedFrameDecoder解码
+                            pipeline.addLast(new LineBasedFrameDecoder(5120));
                             pipeline.addLast(new StringDecoder());
                             pipeline.addLast(new SomeSocketServerHandler());
                         }
